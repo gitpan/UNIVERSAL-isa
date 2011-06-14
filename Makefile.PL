@@ -29,7 +29,7 @@ my %WriteMakefileArgs = (
     'vars' => '0',
     'warnings::register' => '0'
   },
-  'VERSION' => '1.20110613',
+  'VERSION' => '1.20110614',
   'test' => {
     'TESTS' => 't/*.t'
   }

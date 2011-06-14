@@ -24,4 +24,4 @@ requires:
 resources:
   homepage: https://github.com/chromatic/UNIVERSAL-isa
   repository: https://github.com/chromatic/UNIVERSAL-isa.git
-version: 1.20110613
+version: 1.20110614
