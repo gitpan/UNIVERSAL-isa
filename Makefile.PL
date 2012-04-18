@@ -9,29 +9,31 @@ use ExtUtils::MakeMaker 6.30;
 
 
 my %WriteMakefileArgs = (
-  'ABSTRACT' => 'Attempt to recover from people calling UNIVERSAL::isa as a function',
-  'AUTHOR' => 'chromatic',
-  'BUILD_REQUIRES' => {
-    'CGI' => '0',
-    'Test::More' => '0',
-    'overload' => '0'
+  "ABSTRACT" => "Attempt to recover from people calling UNIVERSAL::isa as a function",
+  "AUTHOR" => "chromatic",
+  "BUILD_REQUIRES" => {
+    "CGI" => 0,
+    "Test::More" => 0,
+    "overload" => 0
   },
-  'CONFIGURE_REQUIRES' => {
-    'ExtUtils::MakeMaker' => '6.30'
+  "CONFIGURE_REQUIRES" => {
+    "ExtUtils::MakeMaker" => "6.30"
   },
-  'DISTNAME' => 'UNIVERSAL-isa',
-  'EXE_FILES' => [],
-  'LICENSE' => 'perl',
-  'NAME' => 'UNIVERSAL::isa',
-  'PREREQ_PM' => {
-    'Scalar::Util' => '0',
-    'UNIVERSAL' => '0',
-    'vars' => '0',
-    'warnings::register' => '0'
+  "DISTNAME" => "UNIVERSAL-isa",
+  "EXE_FILES" => [],
+  "LICENSE" => "perl",
+  "NAME" => "UNIVERSAL::isa",
+  "PREREQ_PM" => {
+    "Scalar::Util" => 0,
+    "UNIVERSAL" => 0,
+    "strict" => 0,
+    "vars" => 0,
+    "warnings" => 0,
+    "warnings::register" => 0
   },
-  'VERSION' => '1.20110614',
-  'test' => {
-    'TESTS' => 't/*.t'
+  "VERSION" => "1.20120418",
+  "test" => {
+    "TESTS" => "t/*.t"
   }
 );
 

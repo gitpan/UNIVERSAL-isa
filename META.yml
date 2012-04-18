@@ -9,7 +9,7 @@ build_requires:
 configure_requires:
   ExtUtils::MakeMaker: 6.30
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 4.200007, CPAN::Meta::Converter version 2.110930'
+generated_by: 'Dist::Zilla version 4.300014, CPAN::Meta::Converter version 2.120921'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -18,10 +18,12 @@ name: UNIVERSAL-isa
 requires:
   Scalar::Util: 0
   UNIVERSAL: 0
-  perl: 5.6.2
+  perl: v5.6.2
+  strict: 0
   vars: 0
+  warnings: 0
   warnings::register: 0
 resources:
   homepage: https://github.com/chromatic/UNIVERSAL-isa
   repository: https://github.com/chromatic/UNIVERSAL-isa.git
-version: 1.20110614
+version: 1.20120418

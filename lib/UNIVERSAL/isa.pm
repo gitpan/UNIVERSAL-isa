@@ -1,6 +1,6 @@
 package UNIVERSAL::isa;
-BEGIN {
-  $UNIVERSAL::isa::VERSION = '1.20110614';
+{
+  $UNIVERSAL::isa::VERSION = '1.20120418';
 }
 # ABSTRACT: Attempt to recover from people calling UNIVERSAL::isa as a function
 
