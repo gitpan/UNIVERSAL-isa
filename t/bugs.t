@@ -1,12 +1,8 @@
-#! perl
-
 use strict;
 use warnings;
 
 use Test::More tests => 11;
-
 use UNIVERSAL::isa 'isa';
-
 no warnings 'UNIVERSAL::isa';
 
 # class method
@@ -60,7 +56,7 @@ no warnings 'UNIVERSAL::isa';
 {
     package Quux;
 
-    use vars '$AUTOLOAD';
+    our $AUTOLOAD;
     sub isa;
 
     sub new

@@ -1,25 +1,19 @@
 package UNIVERSAL::isa;
-{
-  $UNIVERSAL::isa::VERSION = '1.20120726';
-}
+# git description: 1.20120726-15-gdb10105
+$UNIVERSAL::isa::VERSION = '1.20140824';
 # ABSTRACT: Attempt to recover from people calling UNIVERSAL::isa as a function
 
 use strict;
 use warnings;
 use 5.6.2;
 
-use vars qw( $recursing );
-
 use UNIVERSAL ();
-
 use Scalar::Util 'blessed';
 use warnings::register;
 
 my ( $orig, $verbose_warning );
 
 BEGIN { $orig = \&UNIVERSAL::isa }
-
-no warnings 'redefine';
 
 sub import
 {
@@ -33,65 +27,71 @@ sub import
     }
 }
 
+our $_recursing;
+
+no warnings 'redefine';
 sub UNIVERSAL::isa
 {
-    goto &$orig if $recursing;
-    my $type = invocant_type(@_);
+    goto &$orig if $_recursing;
+    my $type = _invocant_type(@_);
     $type->(@_);
 }
+use warnings;
 
-sub invocant_type
+sub _invocant_type
 {
     my $invocant = shift;
-    return \&nonsense unless defined($invocant);
-    return \&object_or_class if blessed($invocant);
-    return \&reference       if ref($invocant);
-    return \&nonsense unless $invocant;
-    return \&object_or_class;
+    return \&_nonsense unless defined($invocant);
+    return \&_object_or_class if blessed($invocant);
+    return \&_reference       if ref($invocant);
+    return \&_nonsense unless $invocant;
+    return \&_object_or_class;
 }
 
-sub nonsense
+sub _nonsense
 {
-    report_warning('on invalid invocant') if $verbose_warning;
+    _report_warning('on invalid invocant') if $verbose_warning;
     return;
 }
 
-sub object_or_class
+sub _object_or_class
 {
-
     local $@;
-    local $recursing = 1;
+    local $_recursing = 1;
 
     if ( my $override = eval { $_[0]->can('isa') } )
     {
         unless ( $override == \&UNIVERSAL::isa )
         {
-            report_warning();
+            _report_warning();
             my $obj = shift;
             return $obj->$override(@_);
         }
     }
 
-    report_warning() if $verbose_warning;
+    _report_warning() if $verbose_warning;
     goto &$orig;
 }
 
-sub reference
+sub _reference
 {
-    report_warning('Did you mean to use Scalar::Util::reftype() instead?')
+    _report_warning('Did you mean to use Scalar::Util::reftype() instead?')
         if $verbose_warning;
     goto &$orig;
 }
 
-sub report_warning
+sub _report_warning
 {
     my $extra = shift;
     $extra = $extra ? " ($extra)" : '';
 
     if ( warnings::enabled() )
     {
-        my $calling_sub = ( caller(3) )[3] || '';
-        return if $calling_sub =~ /::isa$/;
+        # check calling sub
+        return if (( caller(3) )[3] || '') =~ /::isa$/;
+        # check calling package - exempt Test::Builder??
+        return if (( caller(3) )[0] || '') =~ /^Test::Builder/;
+
         warnings::warn(
             "Called UNIVERSAL::isa() as a function, not a method$extra" );
     }
@@ -103,9 +103,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
-UNIVERSAL::isa - recover from people calling UNIVERSAL::isa as a function
+UNIVERSAL::isa - Attempt to recover from people calling UNIVERSAL::isa as a function
+
+=head1 VERSION
+
+version 1.20140824
 
 =head1 SYNOPSIS
 
@@ -170,15 +176,43 @@ a staggeringly bad idea.
 
 =head1 AUTHORS
 
+=over 4
+
+=item *
+
 Audrey Tang <cpan@audreyt.org>
+
+=item *
 
 chromatic <chromatic@wgz.org>
 
-Yuval Kogman <nothingmuch@woobling.org>
+=item *
 
-=head1 COPYRIGHT & LICENSE
+יובל קוג'מן (Yuval Kogman) <nothingmuch@woobling.org>
 
-Copyright (c) 2005 - 2011, chromatic. This module is made available under the
-same terms as Perl 5.12.
+=back
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2011 by chromatic@wgz.org.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=head1 CONTRIBUTORS
+
+=for stopwords Karen Etheridge Ricardo Signes
+
+=over 4
+
+=item *
+
+Karen Etheridge <ether@cpan.org>
+
+=item *
+
+Ricardo Signes <rjbs@cpan.org>
+
+=back
 
 =cut

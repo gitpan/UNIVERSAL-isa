@@ -1,17 +1,11 @@
-#! perl
-
 use strict;
 use warnings;
 
-use Test::More tests => 46;
-
+use Test::More tests => 52;
 use UNIVERSAL::isa 'isa';
-
-use warnings;
 
 {
     package Foo;
-
     sub isa { 1 }
 }
 
@@ -40,9 +34,11 @@ use warnings;
 my ($f, $b, $g, $x) = map { bless [], $_ } qw( Foo Bar Gorch Baz );
 
 {
-
     my $warning = '';
     local $SIG{__WARN__} = sub { $warning = shift };
+
+    ok( !isa( undef, 'Foo' ), 'undef isa nothing' );
+    is( $warning, '', 'not warning by default' );
 
     ok(  isa( [], 'ARRAY' ), '[] is an array ref' );
     is( $warning, '', 'not warning by default' );
@@ -94,6 +90,9 @@ my ($f, $b, $g, $x) = map { bless [], $_ } qw( Foo Bar Gorch Baz );
     my $warning = '';
     local $SIG{__WARN__} = sub { $warning = shift };
 
+    ok( !isa( undef, 'Foo' ), 'undef isa nothing' );
+    is( $warning, '', 'not warning by default' );
+
     $warning = '';
     ok( isa( {},     'HASH' ),   'hash reference isa HASH'       );
     is( $warning,    '',         '... and no warning by default' );
@@ -125,6 +124,10 @@ my ($f, $b, $g, $x) = map { bless [], $_ } qw( Foo Bar Gorch Baz );
 
     my $warning = '';
     local $SIG{__WARN__} = sub { $warning = shift };
+
+    ok( !isa( undef, 'Foo' ), 'undef isa nothing' );
+    like( $warning, qr/Called.+as a function.+on invalid invocant.+basic.t/,
+        '... warning in verbose mode' );
 
     ok( isa( {},     'HASH' ),      'hash reference isa HASH'     );
     like( $warning, qr/Called.+as a function.+reftyp.+basic.t/,

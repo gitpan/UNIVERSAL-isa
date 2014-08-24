@@ -1,10 +1,7 @@
-#! perl
-
 use strict;
 use warnings;
 
-use Test::More tests => 8;
-
+use Test::More tests => 12;
 use UNIVERSAL::isa 'isa';
 
 use warnings 'UNIVERSAL::isa';
@@ -20,7 +17,7 @@ use warnings 'UNIVERSAL::isa';
 }
 
 my $foo = bless {}, 'Foo';
-my $bar = bless {}, 'bar';
+my $bar = bless {}, 'Bar';
 
 {
     my $warning          = '';
@@ -36,12 +33,20 @@ my $bar = bless {}, 'bar';
         '... even if isa() would return false' );
 
     $warning = '';
+    $foo->isa( 'Bar' );
+    is( $warning, '', 'No warnings when called properly, as a method' );
+
+    $warning = '';
     UNIVERSAL::isa( $bar, 'Foo' );
     is( $warning, '', '... but not by default on default isa()' );
 
     $warning = '';
     UNIVERSAL::isa( $bar, 'Bar' );
     is( $warning, '', '... even when it would return false' );
+
+    $warning = '';
+    $bar->isa( 'Bar' );
+    is( $warning, '', 'No warnings when called properly, as a method' );
 }
 
 {
@@ -60,6 +65,10 @@ my $bar = bless {}, 'bar';
         '... even if isa() would return false' );
 
     $warning = '';
+    $foo->isa( 'Bar' );
+    is( $warning, '', 'No warnings when called properly, as a method' );
+
+    $warning = '';
     UNIVERSAL::isa( $bar, 'Foo' );
     like( $warning, qr/Called UNIVERSAL::isa\(\) as a function.+warnings.t/,
         '... and on default isa()' );
@@ -68,4 +77,11 @@ my $bar = bless {}, 'bar';
     UNIVERSAL::isa( $bar, 'Bar' );
     like( $warning, qr/Called UNIVERSAL::isa\(\) as a function.+warnings.t/,
         '... even when it would return false' );
+
+    TODO: {
+        local $TODO = 'no apparent way of distinguishing between being called as a function and a method';
+        $warning = '';
+        $bar->isa( 'Bar' );
+        is( $warning, '', 'No warnings when called properly, as a method' );
+    }
 }
