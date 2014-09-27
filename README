@@ -1,7 +1,7 @@
 
 
 This archive contains the distribution UNIVERSAL-isa,
-version 1.20140824:
+version 1.20140927:
 
   Attempt to recover from people calling UNIVERSAL::isa as a function
 

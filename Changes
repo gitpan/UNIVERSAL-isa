@@ -1,6 +1,9 @@
 Changes for UNIVERSAL::isa
 --------------------------
 
+1.20140927  2014-09-27 04:21:23Z
+    - fix tests for even newer development versions of Test::More
+
 1.20140824  2014-08-24 05:29:46Z
     - fix tests that started failing with new development versions of
       Test::Builder (RT#97468)

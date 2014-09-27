@@ -1,6 +1,6 @@
 package UNIVERSAL::isa;
-# git description: 1.20120726-15-gdb10105
-$UNIVERSAL::isa::VERSION = '1.20140824';
+# git description: 1.20140824-2-g1cfb04c
+$UNIVERSAL::isa::VERSION = '1.20140927';
 # ABSTRACT: Attempt to recover from people calling UNIVERSAL::isa as a function
 
 use strict;
@@ -91,6 +91,7 @@ sub _report_warning
         return if (( caller(3) )[3] || '') =~ /::isa$/;
         # check calling package - exempt Test::Builder??
         return if (( caller(3) )[0] || '') =~ /^Test::Builder/;
+        return if (( caller(2) )[0] || '') =~ /^Test::Stream/;
 
         warnings::warn(
             "Called UNIVERSAL::isa() as a function, not a method$extra" );
@@ -111,7 +112,7 @@ UNIVERSAL::isa - Attempt to recover from people calling UNIVERSAL::isa as a func
 
 =head1 VERSION
 
-version 1.20140824
+version 1.20140927
 
 =head1 SYNOPSIS
 
